@@ -8,6 +8,8 @@ const handleAuth = () => {
 
   if (!userId) throw new Error("Unauthorised");
 
+  console.log("User ID: ", userId);
+
   return { userId };
 };
 
@@ -15,7 +17,9 @@ const handleAuth = () => {
 export const ourFileRouter = {
   courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {}),
+    .onUploadComplete((res) => {
+      console.log(res);
+    }),
 
   courseAttachment: f(["text", "image", "video", "audio", "pdf"])
     .middleware(() => handleAuth())
