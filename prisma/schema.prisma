@@ -125,6 +125,7 @@ model Purchase {
   
 
   @@index([courseId])
+  @@unique([userId, courseId]) //To make sure user can only purchase course once
 }
 
 
