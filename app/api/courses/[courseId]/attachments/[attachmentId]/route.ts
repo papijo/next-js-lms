@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -9,7 +10,7 @@ export async function DELETE(
   try {
     const { userId } = auth();
 
-    if (!userId) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorised", { status: 401 });
     }
 
@@ -24,7 +25,7 @@ export async function DELETE(
       return new NextResponse("Unauthorised", { status: 401 });
     }
 
-    const attachmet = await db.attachment.delete({
+    const attachment = await db.attachment.delete({
       where: {
         courseId: params.courseId,
         id: params.attachmentId,
